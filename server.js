@@ -40,10 +40,18 @@ function required(value) {
 }
 
 function createTransporter() {
+  console.log("SMTP CONFIG:", {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: process.env.SMTP_SECURE,
+    user: process.env.SMTP_USER,
+  });
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: 587,
-    secure: false, 
+    port: Number(process.env.SMTP_PORT || 587),
+    secure: String(process.env.SMTP_SECURE) === "true",
+    requireTLS: true,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
